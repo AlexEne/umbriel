@@ -100,7 +100,11 @@ namespace umbriel {
     if (LayerSurface* layer = exclusiveKeyboardLayer()) {
       layer->focus();
     } else {
-      view->applySeatFocus(!overviewActive);
+      const bool raise = !config().input.focus.followsMouse
+          || (config().input.focus.followsMouse
+              && reason != FocusReason::PointerHover
+              && reason != FocusReason::Startup);
+      view->applySeatFocus(!overviewActive, raise);
     }
     Workspace* workspace = view->workspace();
     if (workspace != nullptr && (!view->pinned() || workspace->active())) {
