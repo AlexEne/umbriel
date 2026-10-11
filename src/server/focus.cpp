@@ -45,7 +45,9 @@ namespace umbriel {
   } // namespace
 
   void FocusManager::focusView(View* view, FocusReason reason) {
-    if (view == nullptr || m_server.sessionLocked()) {
+    if (view == nullptr
+        || m_server.sessionLocked()
+        || (reason == FocusReason::PointerHover && wlr_seat_keyboard_has_grab(m_server.seat()->wlr()))) {
       return;
     }
 
